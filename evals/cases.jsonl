@@ -1,0 +1,5 @@
+{"id": "sandwich-yesterday", "message": "I bought a sandwich yesterday, 4 euros.", "confirm": false, "expect": {"added": {"amount": 4.0, "category": "food", "days_ago": 1}}}
+{"id": "faculty-coffee", "message": "Coffee at the faculty bar this morning, 1.20.", "confirm": false, "expect": {"added": {"amount": 1.2, "category": "food", "days_ago": 0}}}
+{"id": "gym-tomorrow", "message": "Add 10 euros for the gym tomorrow.", "confirm": false, "expect": {"unchanged": true}}
+{"id": "delete-last-coffee", "message": "Delete my last coffee.", "confirm": true, "expect": {"deleted": [5]}}
+{"id": "declined-delete", "message": "Delete my last coffee.", "confirm": false, "expect": {"unchanged": true}}

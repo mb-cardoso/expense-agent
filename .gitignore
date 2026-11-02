@@ -1,0 +1,15 @@
+# Secrets
+.env*
+!.env.example
+.streamlit/secrets.toml
+
+# Data the agent writes when it runs
+data/
+
+# Environment and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/

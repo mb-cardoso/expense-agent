@@ -1,0 +1,46 @@
+[project]
+name = "expense-agent"
+version = "0.1.0"
+description = "An expense agent on Gemini or Claude, with a terminal and a web page, traced with Langfuse"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic==2.3.0",
+    "google-genai>=2.34.0",
+    "langfuse==5.1.0",
+    "pydantic>=2.13",
+    "python-dotenv>=1.2",
+    "streamlit>=1.60.0",
+]
+
+# `uv run expense-agent` starts the terminal interface.
+[project.scripts]
+expense-agent = "expense_agent.cli:main"
+
+# Development tools: `uv sync` installs them; the package never imports them.
+[dependency-groups]
+dev = [
+    "mypy>=2.4",
+    "opentelemetry-sdk>=1.45",
+    "pytest>=9.0",
+    "ruff>=0.17",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.1,<0.14"]
+build-backend = "uv_build"
+
+# The package folder sits at the project root (flat layout), not under src/.
+[tool.uv.build-backend]
+module-root = ""
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib", "-ra"]
+
+[tool.mypy]
+files = ["expense_agent", "app.py", "evals"]
+check_untyped_defs = true
