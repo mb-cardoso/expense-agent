@@ -16,11 +16,15 @@ the tools with their data.
 | Interface | `expense_agent/cli.py`, the terminal; `app.py`, the web page | collects the message and the user's yes or no; shows the tool log and the reply; creates the model and the store and passes them in | builds a prompt or decides which tool runs |
 | Service | `expense_agent/agent.py`, `prompts.py` | fills in the instruction and the message for each request; runs the loop and its rules; returns a Turn | prints, reads input, imports the SDK |
 | AI access | `expense_agent/llm.py` | turns a request into one provider's API call, and its answer into a Reply; records each request as a generation; explains API errors | touches the data |
-| Tools and data | `expense_agent/tools.py`, `schemas.py`, `store.py` | validates the model's arguments, applies the rules, asks before deleting, reads and writes the data | talks to the user |
+| Tools and data | `expense_agent/tools.py`, `schemas.py`, `store.py` | validates the model's arguments, applies the rules, asks before deleting, reads and writes the data, in a JSON file or in MongoDB | talks to the user |
 
 Imports go one way. Each interface imports the rest; `agent.py` imports
 `prompts.py` and `llm.py`; `tools.py` imports `schemas.py` and `store.py`; nothing
-in the package imports an interface. `config.py` is the only module that reads
+in the package imports an interface. Where the data lives is `store.py`'s alone:
+`make_store()` returns the MongoDB store when `MONGODB_URI` is set and the file store
+otherwise, as `make_model()` picks the provider, and `tools.py` sees only the `Store`
+protocol, so moving the data changed no tool. Each interface makes the store once,
+the page per browser tab, because a MongoDB client holds a pool of connections. `config.py` is the only module that reads
 the environment, and every module that needs a setting imports it from there. An
 unknown `PROVIDER` stops the program when `config.py` is imported, with a
 `ValueError` that names the two values. What to do when a setting is missing, such
