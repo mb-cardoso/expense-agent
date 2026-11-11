@@ -12,7 +12,7 @@ from expense_agent.store import make_store
 
 st.title("Expense agent")
 if not config.API_KEY:
-    st.error(f"No API key. Copy .env.example to .env and fill in {config.KEY_NAME}.")
+    st.error(f"No API key: set {config.KEY_NAME} in .env, or in the host's secrets when deployed.")
     st.stop()
 st.caption("You are talking to an AI system, not a person. The tool lines are what was done.")
 tracing.setup()  # on every run: one client per process, even after a re-import

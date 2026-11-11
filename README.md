@@ -15,7 +15,7 @@ reference to read, not a template: each project is built from scratch.
 ## Before you start
 
 - Install uv: https://docs.astral.sh/uv/getting-started/installation/
-- `git clone <this repository's URL>`, then `cd expense-agent`. uv fetches the
+- `git clone <this repository's URL>`, then `cd expense-agent-cloud`. uv fetches the
   Python that `.python-version` names (3.12) by itself.
 - An API key: Gemini's from Google AI Studio (https://aistudio.google.com/apikey),
   which has a free tier; or Claude's from the Claude Console, which needs paid credits.
