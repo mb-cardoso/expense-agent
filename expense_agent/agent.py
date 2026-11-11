@@ -35,13 +35,15 @@ def ask(
     turn: Turn | None = None,
     on_log: OnLog | None = None,
     conversation_id: str | None = None,
+    instruction: str | None = None,
 ) -> Turn:
-    """One message through the loop, as one trace. on_log gets each tool line as it happens."""
+    """One message through the loop, as one trace. on_log gets each tool line as it happens.
+    instruction replaces the expense agent's: an example with other tools passes its own."""
     turn = turn if turn is not None else Turn()
     with tracing.agent_turn(message, conversation_id) as span:
         turn.trace_id = tracing.trace_id(span)
         try:
-            _loop(model, message, previous_id, run_tool, max_rounds, turn, on_log)
+            _loop(model, message, previous_id, run_tool, max_rounds, turn, on_log, instruction)
         finally:
             tracing.end_turn(span, turn.outcome, turn.rounds, turn.reply)
     return turn
@@ -55,8 +57,10 @@ def _loop(
     max_rounds: int,
     turn: Turn,
     on_log: OnLog | None,
+    instruction: str | None,
 ) -> None:
-    instruction = prompts.INSTRUCTION.format(today=datetime.date.today())  # sent with every request
+    if instruction is None:  # sent with every request
+        instruction = prompts.INSTRUCTION.format(today=datetime.date.today())
     reply = model.send_text(prompts.USER_MESSAGE.format(text=message), previous_id, instruction)
     while True:
         turn.last_id = reply.id
