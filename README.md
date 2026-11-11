@@ -102,6 +102,9 @@ address, free.
 
    Community Cloud gives them to the app as environment variables, so `config.py`
    reads them as it reads `.env`. They can be changed later in the app's settings.
+   Leave out a line you have no value for: without `MONGODB_URI` the expenses live in
+   a file on the server, which a reboot resets; without the Langfuse keys there is no
+   tracing. A placeholder left in a line stops the page as it opens.
 4. **Deploy**. Community Cloud installs the packages from `uv.lock` and starts
    `app.py`. The first message sent to the public address shows in Langfuse under the
    environment `production`.
