@@ -8,7 +8,7 @@ import sys
 import uuid
 
 from expense_agent import agent, config, llm, tools, tracing
-from expense_agent.store import ExpenseStore
+from expense_agent.store import make_store
 
 COMMANDS = {
     "/help": "show this list",
@@ -57,7 +57,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"No API key. Copy .env.example to .env and fill in {config.KEY_NAME}.")
         return 1
     tracing.setup()
-    store = ExpenseStore(config.DATA_FILE)
+    store = make_store()
     model = llm.make_model(tools.DECLARATIONS)
     previous_id: str | None = None
     # The interface keeps the conversation, so it names it: the id groups its traces.
@@ -82,9 +82,9 @@ def main(argv: list[str] | None = None) -> int:
             elif command == "/data":
                 try:
                     rows = store.all()
-                except ValueError as error:
+                except Exception as error:  # noqa: BLE001 - a broken file, or no database
                     rows = []
-                    print(f"  {store.path.name} is not valid JSON ({error}). Fix it, or delete it.")
+                    print(f"  The data could not be read: {error}")
                 for row in rows:
                     print("  " + json.dumps(row, ensure_ascii=False))
             elif command == "/clear":

@@ -8,7 +8,7 @@ from typing import Any
 import streamlit as st
 
 from expense_agent import agent, config, llm, tools, tracing
-from expense_agent.store import ExpenseStore
+from expense_agent.store import make_store
 
 st.title("Expense agent")
 if not config.API_KEY:
@@ -16,12 +16,12 @@ if not config.API_KEY:
     st.stop()
 st.caption("You are talking to an AI system, not a person. The tool lines are what was done.")
 tracing.setup()  # on every run: one client per process, even after a re-import
-store = ExpenseStore(config.DATA_FILE)
 
 # One dict, read once per run: Streamlit may stop a run at any access to st.session_state.
 if "chat" not in st.session_state:  # once per browser tab: every message runs this file again
     st.session_state.chat = {
         "model": llm.make_model(tools.DECLARATIONS),  # kept: a local client closes with the run
+        "store": make_store(),  # kept too: one connection to the data per tab, not one per run
         "id": uuid.uuid4().hex,  # one session per tab in the traces
         "previous_id": None,
         "messages": [],  # each with the tool lines it caused
@@ -29,6 +29,7 @@ if "chat" not in st.session_state:  # once per browser tab: every message runs t
         "answers": [],  # the clicks' result lines, sent in front of the next message
     }
 chat = st.session_state.chat
+store = chat["store"]
 
 
 def run_tool(name: str, arguments: dict[str, Any]) -> tools.Result:

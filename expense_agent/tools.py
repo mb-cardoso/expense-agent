@@ -9,13 +9,13 @@ from pydantic import BaseModel, ValidationError
 
 from expense_agent import tracing
 from expense_agent.schemas import AddExpense, DeleteExpense, ListExpenses, NoArguments, check
-from expense_agent.store import ExpenseStore
+from expense_agent.store import Store
 
 Result = dict[str, Any]
 Confirm = Callable[[str], bool | None]  # None: the user answers later
 
 
-def add_expense(store: ExpenseStore, args: AddExpense) -> Result:
+def add_expense(store: Store, args: AddExpense) -> Result:
     if problems := check(args, datetime.date.today()):
         return {  # the last sentence stops the model "fixing" a date and saving that
             "saved": False,
@@ -26,7 +26,7 @@ def add_expense(store: ExpenseStore, args: AddExpense) -> Result:
     return {"saved": store.add(args.model_dump(mode="json"))}
 
 
-def list_expenses(store: ExpenseStore, args: ListExpenses) -> Result:
+def list_expenses(store: Store, args: ListExpenses) -> Result:
     rows = [
         row
         for row in store.all()
@@ -36,14 +36,14 @@ def list_expenses(store: ExpenseStore, args: ListExpenses) -> Result:
     return {"expenses": rows}
 
 
-def total_by_category(store: ExpenseStore, args: NoArguments) -> Result:
+def total_by_category(store: Store, args: NoArguments) -> Result:
     totals: dict[str, float] = {}
     for row in store.all():
         totals[row["category"]] = round(totals.get(row["category"], 0) + row["amount"], 2)
     return {"totals": totals}
 
 
-def delete_expense(store: ExpenseStore, args: DeleteExpense, confirm: Confirm) -> Result:
+def delete_expense(store: Store, args: DeleteExpense, confirm: Confirm) -> Result:
     if (row := store.get(args.id)) is None:
         tracing.tool_failed("not_found")
         return {
@@ -103,7 +103,7 @@ DECLARATIONS = [
 ]
 
 
-def run_tool(name: str, arguments: dict[str, Any], store: ExpenseStore, confirm: Confirm) -> Result:
+def run_tool(name: str, arguments: dict[str, Any], store: Store, confirm: Confirm) -> Result:
     """Run one call the model asked for. Every failure comes back as a result; nothing raises."""
     if name not in TOOLS:
         tracing.tool_failed("unknown_tool")

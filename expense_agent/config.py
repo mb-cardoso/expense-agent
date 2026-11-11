@@ -6,6 +6,8 @@ MODEL                         a model name; MODELS below        the model asked
 GOOGLE_API_KEY                a key; none                       needed with google
 ANTHROPIC_API_KEY             a key; none                       needed with anthropic
 EXPENSES_FILE                 a path; data/expenses.json        where the expenses are kept
+MONGODB_URI                   a connection string; none         set: the expenses live in
+                                                                MongoDB, not in EXPENSES_FILE
 LANGFUSE_PUBLIC_KEY           a key; none                       with the secret key: tracing on
 LANGFUSE_SECRET_KEY           a key; none                       with the public key: tracing on;
                                                                 keep it secret
@@ -38,6 +40,7 @@ MODEL = os.getenv("MODEL", MODELS[PROVIDER])
 # How much Claude thinks. Sent explicitly: Opus 5.5 and Haiku 5.5 default to medium, others high.
 EFFORT: Literal["low", "medium", "high", "xhigh", "max"] = "medium"
 DATA_FILE = ROOT / os.getenv("EXPENSES_FILE", "data/expenses.json")  # relative to ROOT
+MONGODB_URI = os.getenv("MONGODB_URI", "")
 MAX_ROUNDS = 8  # tool rounds for one message
 
 LANGFUSE_PUBLIC_KEY = os.getenv("LANGFUSE_PUBLIC_KEY", "")

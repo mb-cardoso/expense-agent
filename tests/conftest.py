@@ -16,6 +16,7 @@ os.environ.pop("LANGFUSE_TRACING_ENABLED", None)  # whatever .env says: the test
 MEMORY = InMemorySpanExporter()
 LANGFUSE = Langfuse(public_key="pk-lf-test", secret_key="sk-lf-test", span_exporter=MEMORY)
 config.LANGFUSE_PUBLIC_KEY = "pk-lf-test"
+config.MONGODB_URI = ""  # whatever .env says: the page and the terminal tests use the file
 
 
 class ScriptedModel:
