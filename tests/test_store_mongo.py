@@ -12,7 +12,7 @@ pytestmark = pytest.mark.skipif(not URI, reason="MONGODB_URI is not set")
 
 
 def clear(store):
-    for name in ("expenses", "ids"):  # a collection drop: Atlas's read-write role cannot drop a database
+    for name in ("expenses", "ids"):  # Atlas's read-write role drops collections, not databases
         store.client[DATABASE].drop_collection(name)
 
 
