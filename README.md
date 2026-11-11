@@ -85,10 +85,11 @@ Streamlit Community Cloud runs a Streamlit app from a GitHub repository, at a pu
 address, free.
 
 1. Fork this repository into your GitHub account.
-2. At <https://share.streamlit.io>, sign in with GitHub and choose **New app**: your
-   repository, the branch `main`, the file `app.py`.
+2. At <https://share.streamlit.io>, sign in with GitHub and click **Create app**, then
+   "Yup, I have an app": your repository, the branch `main`, the file `app.py`. The
+   **App URL** field is where you choose the address.
 3. In **Advanced settings**: Python 3.12, the version in `.python-version`; and the
-   secrets, as TOML:
+   secrets, pasted into the **Secrets** field as TOML; then **Save**:
 
    ```toml
    PROVIDER = "google"
@@ -106,7 +107,8 @@ address, free.
    a file on the server, which a reboot resets; without the Langfuse keys there is no
    tracing. A placeholder left in a line stops the page as it opens.
 4. **Deploy**. Community Cloud installs the packages from `uv.lock` and starts
-   `app.py`. The first message sent to the public address shows in Langfuse under the
+   `app.py`, within a few minutes for an app this size; the logs are on the right.
+   The first message sent to the public address shows in Langfuse under the
    environment `production`.
 
 What to know:
