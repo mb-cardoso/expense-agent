@@ -31,9 +31,9 @@ if PROVIDER not in ("google", "anthropic"):
     raise ValueError(f"PROVIDER must be google or anthropic, not {PROVIDER!r}. Fix it in .env.")
 KEY_NAME = {"google": "GOOGLE_API_KEY", "anthropic": "ANTHROPIC_API_KEY"}[PROVIDER]
 API_KEY = os.getenv(KEY_NAME)
-# The Gemini alias always names a current model; Claude ids are retired on Anthropic's schedule.
-# Stronger Claude models: claude-sonnet-5-5, claude-opus-5-5.
-MODELS = {"google": "gemini-flash-lite-latest", "anthropic": "claude-haiku-5-5"}
+# Fixed model ids: each provider retires a model on its own schedule, and the id is then changed here.
+# Stronger models: gemini-3.8-flash; claude-sonnet-5-5, claude-opus-5-5.
+MODELS = {"google": "gemini-3.5-flash-lite", "anthropic": "claude-haiku-5-5"}
 MODEL = os.getenv("MODEL", MODELS[PROVIDER])
 # How much Claude thinks. Sent explicitly: Opus 5.5 and Haiku 5.5 default to medium, others high.
 EFFORT: Literal["low", "medium", "high", "xhigh", "max"] = "medium"
