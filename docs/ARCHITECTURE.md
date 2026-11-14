@@ -75,7 +75,7 @@ tool lines, the same `--trace` lines, the same trace shape in Langfuse.
 **Retries are the SDKs' own.** A failed request is sent again on 408, 409, 429, a
 5xx or no connection, with backoff, before the error reaches `explain()`. Against a
 server that always answered 503 or 429, anthropic 2.3.0 sent 3 requests and
-google-genai 2.34.0 (Interactions) sent 4. The interface then shows `explain()`'s
+google-genai 3.3.0 (Interactions) sent 5. The interface then shows `explain()`'s
 sentence and keeps the conversation's id, so the next message goes on from the last
 reply that arrived.
 
