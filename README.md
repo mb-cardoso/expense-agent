@@ -1,9 +1,10 @@
 # Expense agent, in the cloud
 
-The expense agent of <https://github.com/mb-cardoso/expense-agent>, with what a
-deployed application needs: the expenses in MongoDB Atlas, a find-similar example on
-Atlas Vector Search, and the steps to deploy it on Streamlit Community Cloud. The
-first commit is that repository as it stands; the commits after it are the changes.
+This is the `cloud` branch of <https://github.com/mb-cardoso/expense-agent>: the
+expense agent of the `main` branch, with what a deployed application needs: the
+expenses in MongoDB Atlas, a find-similar example on Atlas Vector Search, and the steps
+to deploy it on Streamlit Community Cloud. The commits after `main` are the changes:
+<https://github.com/mb-cardoso/expense-agent/compare/main...cloud>.
 
 The agent keeps a university student's expense records. It adds, lists, totals and
 deletes expenses through four tools, and asks the user before every delete. A
@@ -15,7 +16,7 @@ reference to read, not a template: each project is built from scratch.
 ## Before you start
 
 - Install uv: https://docs.astral.sh/uv/getting-started/installation/
-- `git clone <this repository's URL>`, then `cd expense-agent-cloud`. uv fetches the
+- `git clone --branch cloud <this repository's URL>`, then `cd expense-agent`. uv fetches the
   Python that `.python-version` names (3.12) by itself.
 - An API key: Gemini's from Google AI Studio (https://aistudio.google.com/apikey),
   which has a free tier; or Claude's from the Claude Console, which needs paid credits.
@@ -84,9 +85,10 @@ only search. Similarity is for a query that is an item, "a ticket like this one"
 Streamlit Community Cloud runs a Streamlit app from a GitHub repository, at a public
 address, free.
 
-1. Fork this repository into your GitHub account.
+1. Fork this repository into your GitHub account, with **Copy the `main` branch only**
+   unticked: the fork needs this branch.
 2. At <https://share.streamlit.io>, sign in with GitHub and click **Create app**, then
-   "Yup, I have an app": your repository, the branch `main`, the file `app.py`. The
+   "Yup, I have an app": your repository, the branch `cloud`, the file `app.py`. The
    **App URL** field is where you choose the address.
 3. In **Advanced settings**: Python 3.12, the version in `.python-version`; and the
    secrets, pasted into the **Secrets** field as TOML; then **Save**:
