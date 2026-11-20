@@ -227,4 +227,6 @@ def explain(error: Exception) -> str:
         return "Rate limit reached, even after the SDK's own retries. Wait a minute."
     if status >= 500:
         return f"The API is having problems ({status}). Try again shortly."
+    if status == 402:
+        return "Tjhe API key has no credits left. Trying again will not help."
     return f"The API rejected the request ({status}): {str(error)[:200]}"
